@@ -1,8 +1,6 @@
 package level_1;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +73,24 @@ public class FileManager {
         } catch (IOException e) {
             throw new RuntimeException("IOException at path " + file, e);
         }
+    }
+
+    public void saveObjectToFile(Serializable object, Path file){
+        try (ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(file))) {
+            oos.writeObject(object);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException at path " + file, e);
+        }
+    }
+
+    public Object readObjectFromFile(Path file){
+        Object object = null;
+        try (ObjectInputStream oos = new ObjectInputStream(Files.newInputStream(file))) {
+            object = oos.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Exception at path " + file, e);
+        }
+        return object;
     }
 
     private List<Path> getDirectoryContent(Path dir){
