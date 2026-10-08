@@ -1,6 +1,7 @@
 package level_1;
 
 import java.nio.file.Path;
+import java.util.List;
 
 public class Main {
     FileManager fileManager = new FileManager();
@@ -11,7 +12,8 @@ public class Main {
     void main(String[] args) {
         Vehicle vehicle = new Vehicle("BMW", "Black", 4, 150);
 
-        fileManager.traverseTreeAndSaveToFile(root, txtFilePath);
+        List<String> content = fileManager.traverseTreeAndSaveToFile(root, txtFilePath);
+        content.forEach(System.out::println);
         fileManager.readContentsFromFile(txtFilePath);
         fileManager.saveObjectToFile(vehicle, objFilePath);
         Vehicle readObj = (Vehicle) fileManager.readObjectFromFile(objFilePath);
