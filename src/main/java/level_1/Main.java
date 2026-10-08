@@ -25,7 +25,8 @@ public class Main {
         IO.println("Exercise_2: Current Directory: " + currentDir.toString() + "and its tree: ");
 //        fileManager.walkFileTree(currentDir);
         try {
-            fileManager.printTree(currentDir);
+            List<String> tree = fileManager.traverseTree(currentDir);
+            tree.forEach(IO::println);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

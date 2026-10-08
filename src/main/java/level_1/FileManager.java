@@ -17,27 +17,19 @@ public class FileManager {
                 .toList();
     }
 
-    void printTree(Path dir) throws IOException {
+    public List<String> traverseTree(Path dir) throws IOException {
+        List<String> tree = new ArrayList<>();
         List<Path> children = getDirectoryContent(dir);
         children.sort(new ComparatorPathAlphOrder());
         for (Path child : children) {
-            // print (D) o (F) + lastModifiedTime
             if (Files.isDirectory(child)) {
-                IO.println("(D) : " + child);
-                printTree(child);
-            }
-            else  {
-                IO.println("(F) : " + child + " " + Files.getLastModifiedTime(child));
+                tree.add("(D) : " + child);
+                tree.addAll(traverseTree(child));
+            } else {
+                tree.add("(F) : " + child + " " + Files.getLastModifiedTime(child));
             }
         }
-    }
-
-    public void walkFileTree(Path startDir) {
-        try {
-            Files.walkFileTree(startDir, fileTraverser);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return tree;
     }
 
     private List<Path> getDirectoryContent(Path dir){
