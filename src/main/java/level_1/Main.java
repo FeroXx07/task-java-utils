@@ -1,34 +1,15 @@
 package level_1;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class Main {
     FileManager fileManager = new FileManager();
+    private final Path root = FileManager.findProjectRoot();
+    private final Path txtFilePath = root.resolve(Path.of("src", "main", "resources", "data.txt"));
+
     void main(String[] args) {
-
-//        exercise_1();
-        exercise_2();
+        fileManager.traverseTreeAndSaveToFile(root, txtFilePath);
+        fileManager.readContentsFromFile(txtFilePath);
     }
 
-    void exercise_1(){
-        Path currentDir = Paths.get(System.getProperty("user.dir"));
-        IO.println("Exercise_1: Current Directory: " + currentDir.toString() + "and its contents: ");
-        List<String> fileNames = fileManager.getDirectoryContentByAZOrder(currentDir);
-        fileNames.forEach(f -> IO.println("- " + f));
-    }
-
-    void exercise_2(){
-        Path currentDir = Paths.get(System.getProperty("user.dir"));
-        IO.println("Exercise_2: Current Directory: " + currentDir.toString() + "and its tree: ");
-//        fileManager.walkFileTree(currentDir);
-        try {
-            List<String> tree = fileManager.traverseTree(currentDir);
-            tree.forEach(IO::println);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
